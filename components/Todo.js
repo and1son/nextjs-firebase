@@ -10,7 +10,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Todo = ({ id, timestamp, title, detail }) => {
 
-    const { showAlert } = useContext(TodoContext)
+    const { showAlert, setTodo } = useContext(TodoContext)
 
     const deleteTodo = async (id, e) => {
         e.stopPropagation();
@@ -21,7 +21,7 @@ const Todo = ({ id, timestamp, title, detail }) => {
 
 
     return (
-        <ListItem
+        <ListItem onClick={() => setTodo({ id, title, detail, timestamp })}
             sx={{ mt: 3, boxShadow: 3 }}
             style={{ backgroundColor: '#FAFAFA' }}
             secondaryAction={

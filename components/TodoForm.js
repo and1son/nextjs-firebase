@@ -1,12 +1,14 @@
 import { collection, addDoc, serverTimestamp } from "@firebase/firestore";
 import { Button, TextField } from "@mui/material"
-import { useState, useContext } from "react"
+import { useState, useContext, useRef, useEffect } from "react"
 import { db } from "../firebase"
 import { TodoContext } from "../pages/TodoContext"
 
 const TodoForm = () => {
-    const [todo, setTodo] = useState({ title: '', detail: '' })
-    const { showAlert } = useContext(TodoContext)
+    const inputAreaRef = useRef()
+    const { showAlert, todo, setTodo } = useContext(TodoContext)
+
+
     const onSubmit = async () => {
         const collectionRef = collection(db, "todos")
         const docRef = await addDoc(collectionRef, { ...todo, timestamp: serverTimestamp() })
@@ -14,8 +16,26 @@ const TodoForm = () => {
         showAlert('success', `Todo with id ${docRef.id} is added successfully`)
     }
 
+    useEffect(() => {
+        const checkIfClickedOutside = e => {
+            if (!inputAreaRef.current.contains(e.target)) {
+                console.log("outside the input area");
+                setTodo({ title: '', detail: '' })
+            } else {
+                console.log("insidee the input area")
+            }
+        }
+        document.addEventListener("mousedown", checkIfClickedOutside)
+        return () => {
+            document.removeEventListener("mousedown", checkIfClickedOutside)
+        }
+    }, [])
+
     return (
-        <div>
+        <div ref={inputAreaRef}>
+            {
+                //<pre>{JSON.stringify(todo, null, '\t')}</pre>
+            }
             <TextField fullWidth label="title" margin="normal"
                 value={todo.title}
                 onChange={e => setTodo({ ...todo, title: e.target.value })}
