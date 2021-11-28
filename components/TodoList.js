@@ -20,7 +20,11 @@ const TodoList = () => {
     }, [])
     return (
         <div>
-            {todos.map(todo => <Todo key={todo.id} title={todo.title} timestamp={todo.timestamp} detail={todo.detail} />)}
+            {todos.map(todo => <Todo key={todo.id}
+                id={todo.id}
+                title={todo.title}
+                timestamp={todo.timestamp}
+                detail={todo.detail} />)}
         </div>
     )
 }
