@@ -1,6 +1,13 @@
 import { Button, Grid } from '@mui/material'
 import GoogleIcon from '@mui/icons-material/Google';
+import { signInWithPopup, signInWithRedirect } from '@firebase/auth';
+import { auth, provider } from '../firebase';
+
 const Login = ({ type, color }) => {
+    const loginWithGoogle = () => {
+        signInWithRedirect(auth, provider)
+    }
+
     return (
         <Grid
             container
@@ -10,7 +17,9 @@ const Login = ({ type, color }) => {
             justifyContent="center"
             style={{ minHeight: '100vh' }}>
 
-            <Button variant="contained" startIcon={<GoogleIcon />}>Sign in Google</Button>
+            <Button variant="contained" startIcon={<GoogleIcon />}
+                onClick={loginWithGoogle}
+            >Sign in Google</Button>
         </Grid>
     )
 }
