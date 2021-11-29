@@ -7,16 +7,22 @@ import { doc, deleteDoc } from "@firebase/firestore";
 import { db } from "../firebase";
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useRouter } from 'next/router';
 
 const Todo = ({ id, timestamp, title, detail }) => {
 
     const { showAlert, setTodo } = useContext(TodoContext)
-
+    const router = useRouter();
     const deleteTodo = async (id, e) => {
         e.stopPropagation();
         const docRef = doc(db, "todos", id);
         await deleteDoc(docRef)
         showAlert('error', `Todo with ${id} is deleted`)
+    }
+
+    const seeMore = (id, e) => {
+        e.stopPropagation();
+        router.push(`/todos/${id}`)
     }
 
 
@@ -29,7 +35,7 @@ const Todo = ({ id, timestamp, title, detail }) => {
                     <IconButton onClick={e => deleteTodo(id, e)}>
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={e => seeMore(id, e)}>
                         <MoreVertIcon />
                     </IconButton>
                 </>
@@ -37,7 +43,7 @@ const Todo = ({ id, timestamp, title, detail }) => {
         >
             <ListItemText
                 primary={title}
-                secondary={moment(timestamp).format("DD.MM.YYYY")}
+                secondary={moment(timestamp).format("DD.MM.YYYY HH:mm:ss")}
             />
 
         </ListItem>
