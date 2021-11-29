@@ -3,6 +3,8 @@ import { useState } from 'react';
 import TodoList from '../components/TodoList'
 import TodoForm from '../components/TodoForm'
 import { TodoContext } from './TodoContext';
+import Loading from '../components/Loading';
+import Login from '../components/Login.js';
 
 
 export default function Home() {
@@ -23,6 +25,9 @@ export default function Home() {
     }
     setOpen(false);
   };
+
+  return <Login />
+  return <Loading type="spin" color="blue" />
 
   return (
     <TodoContext.Provider value={{ showAlert, todo, setTodo }}>
