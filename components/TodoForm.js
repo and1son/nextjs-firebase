@@ -1,13 +1,14 @@
 import { collection, addDoc, serverTimestamp, updateDoc, doc } from "@firebase/firestore";
 import { Button, TextField } from "@mui/material"
 import { useState, useContext, useRef, useEffect } from "react"
+import { useAuth } from "../Auth";
 import { db } from "../firebase"
 import { TodoContext } from "../pages/TodoContext"
 
 const TodoForm = () => {
     const inputAreaRef = useRef()
     const { showAlert, todo, setTodo } = useContext(TodoContext)
-
+    const { currentUser } = useAuth();
 
     const onSubmit = async () => {
         if (todo?.hasOwnProperty('timestamp')) {
@@ -18,7 +19,7 @@ const TodoForm = () => {
             showAlert('info', `Todo with id ${todo.id} is updated successfully`)
         } else {
             const collectionRef = collection(db, "todos")
-            const docRef = await addDoc(collectionRef, { ...todo, timestamp: serverTimestamp() })
+            const docRef = await addDoc(collectionRef, { ...todo, timestamp: serverTimestamp(), email: currentUser.email })
             setTodo({ title: '', detail: '' })
             showAlert('success', `Todo with id ${docRef.id} is added successfully`)
         }

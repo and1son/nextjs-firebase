@@ -5,7 +5,7 @@ import { auth, provider } from '../firebase';
 
 const Login = ({ type, color }) => {
     const loginWithGoogle = () => {
-        signInWithRedirect(auth, provider)
+        signInWithPopup(auth, provider)
     }
 
     return (
